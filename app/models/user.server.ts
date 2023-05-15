@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { createClient } from "@supabase/supabase-js";
 import invariant from "tiny-invariant";
 
-export type User = { id: string; email: string };
+export type User = { id: string; email: string; subscribtion: string; trial: boolean; created_at: Date};
 
 // Abstract this away
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -19,6 +19,45 @@ invariant(
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+export async function changeSub(subscribtion: string, id: string) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .update([{ subscribtion }])
+    .match({ id });
+
+  if (!error) {
+    return data;
+  }
+
+  return null;
+}
+
+export async function changetrial(trial: boolean, id: string) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .update([{ trial }])
+    .match({ id });
+
+  if (!error) {
+    return data;
+  }
+
+  return null;
+}
+
+export async function changestripeId(stripeId: string, id: string) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .update([{ stripeId }])
+    .match({ id });
+
+  if (!error) {
+    return data;
+  }
+
+  return null;
+}
+
 export async function createUser(email: string, password: string) {
   const { user } = await supabase.auth.signUp({
     email,
@@ -34,12 +73,23 @@ export async function createUser(email: string, password: string) {
 export async function getProfileById(id: string) {
   const { data, error } = await supabase
     .from("profiles")
-    .select("email, id")
+    .select("email, id, subscribtion, trial, created_at")
     .eq("id", id)
     .single();
 
   if (error) return null;
-  if (data) return { id: data.id, email: data.email };
+  if (data) return { id: data.id, email: data.email, subscribtion: data.subscribtion, trial: data.trial, created_at: data.created_at };
+}
+
+export async function getProfileBystripeId(stripeId: string) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("email, id, subscribtion, trial, created_at")
+    .eq("stripeId", stripeId)
+    .single();
+
+  if (error) return null;
+  if (data) return { id: data.id, email: data.email, subscribtion: data.subscribtion, trial: data.trial, created_at: data.created_at };
 }
 
 export async function getProfileByEmail(email?: string) {
@@ -49,7 +99,7 @@ export async function getProfileByEmail(email?: string) {
     .eq("email", email)
     .single();
 
-  if (error) return null;
+  if (error) return undefined;
   if (data) return data;
 }
 
@@ -57,9 +107,10 @@ export async function verifyLogin(email: string, password: string) {
   const { user, error } = await supabase.auth.signIn({
     email,
     password,
-  });
+  });  
 
-  if (error) return undefined;
+  if (error) return error.message;
+
   const profile = await getProfileByEmail(user?.email);
 
   return profile;

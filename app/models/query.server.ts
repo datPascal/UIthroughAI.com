@@ -1,30 +1,31 @@
 import type { User } from "./user.server";
 import { supabase } from "./user.server";
 
-export type Note = {
+export type Query = {
   id: string;
-  title: string;
-  body: string;
+  prompt: string;
+  answer: string;
   profile_id: string;
 };
 
-export async function getNoteListItems({ userId }: { userId: User["id"] }) {
+export async function getQueryListItems({ userId }: { userId: User["id"] }) {
   const { data } = await supabase
-    .from("notes")
-    .select("id, title")
+    .from("queries")
+    .select("id, prompt, answer")
     .eq("profile_id", userId);
 
   return data;
 }
 
-export async function createNote({
-  title,
-  body,
+export async function createQuery({
+  prompt,
+  answer,
+  id,
   userId,
-}: Pick<Note, "body" | "title"> & { userId: User["id"] }) {
+}: Pick<Query, "answer" | "prompt" | "id"> & { userId: User["id"] }) {
   const { data, error } = await supabase
-    .from("notes")
-    .insert([{ title, body, profile_id: userId }])
+    .from("queries")
+    .insert([{ prompt, answer, id, profile_id: userId }])
     .single();
 
   if (!error) {
@@ -34,12 +35,12 @@ export async function createNote({
   return null;
 }
 
-export async function deleteNote({
+export async function deleteQuery({
   id,
   userId,
-}: Pick<Note, "id"> & { userId: User["id"] }) {
+}: Pick<Query, "id"> & { userId: User["id"] }) {
   const { error } = await supabase
-    .from("notes")
+    .from("queries")
     .delete({ returning: "minimal" })
     .match({ id, profile_id: userId });
 
@@ -50,12 +51,12 @@ export async function deleteNote({
   return null;
 }
 
-export async function getNote({
+export async function getQuery({
   id,
   userId,
-}: Pick<Note, "id"> & { userId: User["id"] }) {
+}: Pick<Query, "id"> & { userId: User["id"] }) {
   const { data, error } = await supabase
-    .from("notes")
+    .from("queries")
     .select("*")
     .eq("profile_id", userId)
     .eq("id", id)
@@ -65,8 +66,8 @@ export async function getNote({
     return {
       userId: data.profile_id,
       id: data.id,
-      title: data.title,
-      body: data.body,
+      prompt: data.prompt,
+      answer: data.answer
     };
   }
 

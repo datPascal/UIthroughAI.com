@@ -1,6 +1,7 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { getProfileById } from "./models/user.server";
+import { Configuration, OpenAIApi } from "openai";
 
 invariant(
   process.env.SESSION_SECRET,
@@ -93,6 +94,32 @@ export async function createUserSession({
       }),
     },
   });
+}
+
+
+export async function CallChatGPT(messages) {
+  const configuration = new Configuration({
+    apiKey: process.env.OpenAIAPIKey ,
+  });
+  const openai = new OpenAIApi(configuration);  
+
+  const response = await fetch(`https://api.openai.com/v1/chat/completions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${process.env.OpenAIAPIKey}`
+    },
+    body: JSON.stringify({
+      model: 'gpt-3.5-turbo',
+      messages 
+    })
+  });
+  const data = await response.json();
+  messages.push({
+    'role': 'assistant',
+    'content': data.choices[0].message.content 
+  });
+  return messages;
 }
 
 export async function logout(request: Request) {

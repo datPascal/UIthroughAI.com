@@ -1,10 +1,8 @@
-# Remix K-pop Stack
+# SQLtroughAI
 
-![k-pop site image](https://res.cloudinary.com/dzkoxrsdj/image/upload/v1648844684/CleanShot_2022-04-01_at_16.23.40_2x_oo3ppe.jpg)
+![SQLtroughAI Image](https://images2.imgbox.com/dc/1a/hdU5xhfP_o.png)
 
 Deployed Site: [kpop-stack.netlify.app](https://kpop-stack.netlify.app)
-
-Learn more about [Remix Stacks](https://remix.run/stacks).
 
 ```
 npx create-remix --template netlify-templates/kpop-stack

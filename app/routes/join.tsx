@@ -9,6 +9,8 @@ import { createUserSession, getUserId } from "~/session.server";
 import { createUser, getProfileByEmail } from "~/models/user.server";
 import { validateEmail } from "~/utils";
 import * as React from "react";
+import HEADERBEFORELOGIN from "./headerBeforeLogin";
+
 
 export const meta: MetaFunction = () => {
   return {
@@ -25,7 +27,7 @@ interface ActionData {
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
-  if (userId) return redirect("/");
+  if (userId) return redirect("/Home");
   return json({});
 };
 
@@ -75,10 +77,10 @@ export const action: ActionFunction = async ({ request }) => {
     request,
     userId: user.id,
     remember: false,
-    redirectTo: typeof redirectTo === "string" ? redirectTo : "/",
+    redirectTo: typeof redirectTo === "string" ? redirectTo : "/Home",
   });
 };
-
+ 
 export default function Join() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? undefined;
@@ -86,6 +88,7 @@ export default function Join() {
   const actionData = useActionData() as ActionData;
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
+  
 
   React.useEffect(() => {
     if (actionData?.errors?.email) {
@@ -98,12 +101,12 @@ export default function Join() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full flex-col justify-center">
+    <div className="flex min-h-full bg-white flex-col justify-center">
       <div className="mx-auto w-full max-w-md px-8">
         <Form className="space-y-6" method="post" noValidate>
           <div>
             <label className="text-sm font-medium" htmlFor="email">
-              <span className="block text-gray-700">Email Address</span>
+              <span className="block text-gray-900">Email Address</span>
               {actionData?.errors?.email && (
                 <span className="block pt-1 text-red-700" id="email-error">
                   {actionData?.errors?.email}
@@ -123,12 +126,12 @@ export default function Join() {
           </div>
           <div>
             <label className="text-sm font-medium" htmlFor="password">
-              <span className="block text-gray-700">Password</span>
-              <span className="block font-light text-gray-700">
+              <span className="block text-gray-900">Password</span>
+              <span className="block font-light text-gray-600">
                 Must have at least 6 characters.
               </span>
               {actionData?.errors?.password && (
-                <span className="pt-1 text-red-700" id="password-error">
+                <span className="pt-1 text-gray-600" id="password-error">
                   {actionData?.errors?.password}
                 </span>
               )}
@@ -150,9 +153,9 @@ export default function Join() {
           >
             Create Account
           </button>
-          <input type="hidden" name="redirectTo" value={redirectTo} />
+          <input type="hidden" name="redirectTo" value="/Home" />
           <div className="flex items-center justify-center">
-            <div className="text-center text-sm text-gray-500">
+            <div className="text-center text-sm text-gray-900">
               Already have an account?{" "}
               <Link
                 className="text-blue-500 underline"
@@ -167,6 +170,14 @@ export default function Join() {
           </div>
         </Form>
       </div>
+      <Link className="text-blue-500 underline hidden" to={{
+                  pathname: "/databases",
+                  search: searchParams.toString(),
+                }}></Link>
+      <Link className="text-blue-500 underline hidden" to={{
+                  pathname: "/Home",
+                  search: searchParams.toString(),
+                }}></Link>
     </div>
   );
 }
