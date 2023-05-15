@@ -34,14 +34,14 @@ export default function HEADER() {
   return (
     <header className="bg-white text-black md:flex md:justify-between md:items-center p-4">
       <div className="flex items-center justify-between">
-      <a href="https://TherapyFlow.de" className="flex items-center">
+      <a href="https://UItroughAI.com" className="flex items-center">
           <img
-            src={require("./../assets/TherapyFlowIcon.png")}
+            src={require("./../assets/UItroughAIIcon.png")}
             className="h-12 mr-3"
-            alt="TherapyFlow Logo"
+            alt="UItroughAI Logo"
           />
           <span className="self-center text-2xl font-semibold whitespace-nowrap ">
-            TherapyFlow
+            UItroughAI
           </span>
         </a>
         <button

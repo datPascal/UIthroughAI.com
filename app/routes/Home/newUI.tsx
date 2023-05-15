@@ -4,10 +4,8 @@ import type {
     MetaFunction,
   } from "@remix-run/node";
   import { json, redirect } from "@remix-run/node";
-  import { Form, Link, useLoaderData, useActionData, useTransition} from "@remix-run/react";
-  import { getProfileById } from "~/models/user.server";
+  import { Form, useLoaderData, useActionData, useTransition} from "@remix-run/react";
   import { requireUserId } from "~/session.server";
-  import { useUser } from "~/utils";
   import { useState } from "react";
   import { createClient } from "~/models/clients.server";
 
@@ -69,7 +67,7 @@ import type {
   };
   
 
-export default function newClient() {
+export default function newUI() {
 
     const transition = useTransition();
     const isSaving = Boolean(transition.submission);

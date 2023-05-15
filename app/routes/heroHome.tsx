@@ -28,11 +28,11 @@ function HeroHome() {
           {/* Section header */}
           <div className="text-center pb-12 md:pb-16">
             <h1 className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4" data-aos="zoom-y-out">
-              Concentrate <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">100% </span>of your time on your clients.
+              Generate UI in <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">your specific Style </span> and safe lots of time
             </h1>
             <div className="max-w-3xl mx-auto">
               <p className="text-xl text-gray-600 mb-8" data-aos="zoom-y-out" data-aos-delay="150">
-                We write the Documentation while you help the people. 
+                You tell our AI what to do, and watch while it works for you.
               </p>
                {/* currently deactivated 
               <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center" data-aos="zoom-y-out" data-aos-delay="300">
