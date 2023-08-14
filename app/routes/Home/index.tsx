@@ -1,4 +1,4 @@
-import NewUI from "./newUI"; 
+import NewUI from "./newUI";
 import type {
   MetaFunction,
 } from "@remix-run/node";

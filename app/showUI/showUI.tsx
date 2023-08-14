@@ -18,8 +18,19 @@ export default function UI({ html }: ChatProps) {
   return (
     <div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen">
       <div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen overflow-y-auto">
-        <Interweave content={html} />
+        <Interweave content={html} transform={transform}/>
       </div>
     </div>
+  );
+}
+
+
+export function UserInsertedContent({ html }) {
+  return (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: html,
+      }}
+    />
   );
 }
